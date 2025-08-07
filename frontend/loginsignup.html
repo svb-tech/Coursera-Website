@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body {
+            background-image: url('loginbg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100vw;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .login-form {
+            border-radius: 10px;
+            width: 100%;
+            max-width: 350px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login h1 {
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        label {
+            margin-top: 10px;
+            text-align: left;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            margin-top: 10px;
+            background: transparent;
+            outline: none;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 30px;
+            box-shadow: 0 0 4px #fff;
+            color: white;
+            border: 1px solid #fff;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+            /* Added margin to separate form elements */
+        }
+
+        .btn {
+            padding: 10px 30px;
+            margin-top: 30px;
+            background: transparent;
+            border-radius: 30px;
+            box-shadow: 0 0 4px #fff;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        input:focus,
+        .btn:hover {
+            box-shadow: 0 0 10px;
+        }
+
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .login h4 {
+            margin-top: 40px;
+            /* Spaced out from the login button */
+        }
+
+        .login a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .login a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-form">
+            <div class="login">
+                <h1> Welcome!
+                </h1>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="email" id="username" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label for="firstname">Firstname</label>
+                    <input type="text" id="firstname" placeholder="Enter your first name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Lastname</label>
+                    <input type="text" id="lastname" placeholder="Enter your last name" required>
+                </div>
+
+
+                <button type="submit" class="btn">Sign Up</button>
+
+
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    document.querySelector("form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const firstname = document.getElementById("firstname").value;
+        const lastname = document.getElementById("lastname").value;
+
+        try {
+            const res = await fetch("http://localhost:3000/api/v1/user/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    firstName: firstname,
+                    lastName: lastname
+                })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert("Signup successful! Redirecting to login...");
+                window.location.href = "login.html"; // Or index.html if you auto-login
+            } else {
+                alert(data.message || "Signup failed");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Server error. Try again later.");
+        }
+    });
+</script>
+
+</html>
